@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Nettech Help Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="bi bi-headset text-primary"></i>
+        <span>Nettech IT</span>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="/user/dashboard.html" class="sidebar-link active">
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>My Dashboard</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/user/raise-ticket.html" class="sidebar-link">
+          <i class="bi bi-plus-circle"></i>
+          <span>Raise Ticket</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/user/profile.html" class="sidebar-link">
+          <i class="bi bi-person-gear"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      <li class="sidebar-item mt-4">
+        <a href="#" class="sidebar-link text-danger btn-logout">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Area -->
+  <main class="main-content">
+    <!-- Navbar -->
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary d-md-none" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h5 class="mb-0 fw-bold">Employee Help Desk</h5>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary theme-toggle-btn" title="Toggle dark/light mode">
+          <i class="bi bi-moon"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+          <img src="" alt="Avatar" class="avatar-img nav-user-avatar">
+          <div class="d-none d-sm-block text-start">
+            <div class="small fw-bold nav-user-name">Loading...</div>
+            <div class="text-muted" style="font-size: 0.75rem;">Employee</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid p-4">
+      <!-- Welcome Bar -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+          <h3 class="fw-bold mb-1">Welcome back, <span id="welcome-name">...</span>!</h3>
+          <p class="text-muted small mb-0">Track and manage your internal IT support tickets</p>
+        </div>
+        <a href="/user/raise-ticket.html" class="btn btn-primary d-inline-flex align-items-center gap-2">
+          <i class="bi bi-plus-lg"></i>
+          <span>Raise New Ticket</span>
+        </a>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Total Raised</span>
+              <div class="stat-number" id="stat-total">0</div>
+            </div>
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+              <i class="bi bi-ticket-detailed"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Pending</span>
+              <div class="stat-number text-warning" id="stat-pending">0</div>
+            </div>
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+              <i class="bi bi-clock-history"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">In Progress</span>
+              <div class="stat-number text-info" id="stat-progress">0</div>
+            </div>
+            <div class="stat-icon bg-info bg-opacity-10 text-info">
+              <i class="bi bi-gear-wide-connected"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Resolved / Closed</span>
+              <div class="stat-number text-success" id="stat-resolved">0</div>
+            </div>
+            <div class="stat-icon bg-success bg-opacity-10 text-success">
+              <i class="bi bi-check2-circle"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tickets Table Card -->
+      <div class="card-custom p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+          <h5 class="fw-bold mb-0">My Support Tickets</h5>
+          <div class="d-flex flex-wrap gap-2">
+            <div class="input-group input-group-sm" style="max-width: 260px;">
+              <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+              <input type="text" id="ticket-search" class="form-control" placeholder="Search ID or title...">
+            </div>
+            <select id="status-filter" class="form-select form-select-sm" style="width: 140px;">
+              <option value="all">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="tickets-table">
+            <thead class="table-light small">
+              <tr>
+                <th>Ticket ID</th>
+                <th>Subject</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Date Raised</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tickets-tbody">
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                  Loading tickets...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+          <small class="text-muted" id="pagination-info">Showing 0 tickets</small>
+          <nav>
+            <ul class="pagination pagination-sm mb-0" id="pagination-controls"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/guard.js"></script>
+<script>
+  let currentUser = null;
+  let currentPage = 1;
+  let searchDebounceTimer = null;
+
+  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('show');
+  });
+
+  async function loadDashboard() {
+    currentUser = await checkAuth('user');
+    if (!currentUser) return;
+
+    document.getElementById('welcome-name').textContent = currentUser.name;
+
+    // Load stats
+    try {
+      const statsRes = await api.get('/dashboard/user-stats');
+      const data = statsRes.data;
+      document.getElementById('stat-total').textContent = data.total || 0;
+      document.getElementById('stat-pending').textContent = data.byStatus?.Pending || 0;
+      document.getElementById('stat-progress').textContent = data.byStatus?.['In Progress'] || 0;
+      document.getElementById('stat-resolved').textContent = (data.byStatus?.Resolved || 0) + (data.byStatus?.Closed || 0);
+    } catch (e) {
+      console.error('Stats error:', e);
+    }
+
+    loadTickets();
+  }
+
+  async function loadTickets(page = 1) {
+    currentPage = page;
+    const tbody = document.getElementById('tickets-tbody');
+    const searchVal = document.getElementById('ticket-search').value.trim();
+    const statusVal = document.getElementById('status-filter').value;
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-4 text-muted">
+          <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+          Loading tickets...
+        </td>
+      </tr>
+    `;
+
+    try {
+      const res = await api.get('/tickets', {
+        page,
+        limit: 10,
+        search: searchVal,
+        status: statusVal
+      });
+
+      const { tickets, pagination } = res.data;
+
+      if (!tickets || tickets.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+              No tickets found. Need help? Click <strong>Raise New Ticket</strong>.
+            </td>
+          </tr>
+        `;
+        document.getElementById('pagination-info').textContent = 'Showing 0 tickets';
+        document.getElementById('pagination-controls').innerHTML = '';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      tickets.forEach(ticket => {
+        const tr = document.createElement('tr');
+
+        // Status badge class
+        let statusClass = 'badge-pending';
+        if (ticket.status === 'In Progress') statusClass = 'badge-inprogress';
+        else if (ticket.status === 'Resolved') statusClass = 'badge-resolved';
+        else if (ticket.status === 'Closed') statusClass = 'badge-closed';
+
+        // Priority badge class
+        let priorityClass = 'badge-medium';
+        if (ticket.priority === 'High') priorityClass = 'badge-high';
+        else if (ticket.priority === 'Low') priorityClass = 'badge-low';
+
+        const createdDate = new Date(ticket.createdAt).toLocaleDateString('en-GB', {
+          day: '2-digit', month: 'short', year: 'numeric'
+        });
+
+        tr.innerHTML = `
+          <td class="fw-semibold text-primary">
+            <a href="/user/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="ticket-link"></a>
+          </td>
+          <td class="ticket-title fw-medium text-truncate" style="max-width: 250px;"></td>
+          <td><span class="badge bg-light text-dark border category-badge"></span></td>
+          <td><span class="badge-status ${priorityClass} priority-badge"></span></td>
+          <td><span class="badge-status ${statusClass} status-badge"></span></td>
+          <td class="small text-muted date-cell"></td>
+          <td class="text-end">
+            <a href="/user/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-eye"></i> View
+            </a>
+          </td>
+        `;
+
+        // Safely set text content for user fields (prevent XSS)
+        tr.querySelector('.ticket-link').textContent = ticket.ticketId;
+        tr.querySelector('.ticket-title').textContent = ticket.title;
+        tr.querySelector('.category-badge').textContent = ticket.category;
+        tr.querySelector('.priority-badge').textContent = ticket.priority;
+        tr.querySelector('.status-badge').textContent = ticket.status;
+        tr.querySelector('.date-cell').textContent = createdDate;
+
+        tbody.appendChild(tr);
+      });
+
+      // Pagination controls
+      document.getElementById('pagination-info').textContent = 
+        `Showing page ${pagination.page} of ${pagination.pages} (${pagination.total} total tickets)`;
+
+      renderPagination(pagination);
+
+    } catch (err) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-4 text-danger">
+            Failed to load tickets: ${err.message}
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  function renderPagination(p) {
+    const ul = document.getElementById('pagination-controls');
+    ul.innerHTML = '';
+    if (p.pages <= 1) return;
+
+    // Previous
+    const prevLi = document.createElement('li');
+    prevLi.className = `page-item ${p.page <= 1 ? 'disabled' : ''}`;
+    prevLi.innerHTML = `<a class="page-link" href="#">&laquo;</a>`;
+    if (p.page > 1) {
+      prevLi.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadTickets(p.page - 1);
+      });
+    }
+    ul.appendChild(prevLi);
+
+    for (let i = 1; i <= p.pages; i++) {
+      const li = document.createElement('li');
+      li.className = `page-item ${i === p.page ? 'active' : ''}`;
+      li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+      li.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadTickets(i);
+      });
+      ul.appendChild(li);
+    }
+
+    // Next
+    const nextLi = document.createElement('li');
+    nextLi.className = `page-item ${p.page >= p.pages ? 'disabled' : ''}`;
+    nextLi.innerHTML = `<a class="page-link" href="#">&raquo;</a>`;
+    if (p.page < p.pages) {
+      nextLi.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadTickets(p.page + 1);
+      });
+    }
+    ul.appendChild(nextLi);
+  }
+
+  // Debounced search
+  document.getElementById('ticket-search').addEventListener('input', () => {
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      loadTickets(1);
+    }, 350);
+  });
+
+  document.getElementById('status-filter').addEventListener('change', () => {
+    loadTickets(1);
+  });
+
+  document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+</body>
+</html>

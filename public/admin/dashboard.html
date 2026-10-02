@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Nettech Help Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Chart.js CDN for statistics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="bi bi-shield-lock-fill text-primary"></i>
+        <span>Nettech Admin</span>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="/admin/dashboard.html" class="sidebar-link active">
+          <i class="bi bi-speedometer2"></i>
+          <span>Overview</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/tickets.html" class="sidebar-link">
+          <i class="bi bi-ticket-perforated"></i>
+          <span>Manage Tickets</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/users.html" class="sidebar-link">
+          <i class="bi bi-people"></i>
+          <span>Users</span>
+        </a>
+      </li>
+      <li class="sidebar-item mt-4">
+        <a href="#" class="sidebar-link text-danger btn-logout">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Area -->
+  <main class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary d-md-none" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h5 class="mb-0 fw-bold">IT Operations Dashboard</h5>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary theme-toggle-btn" title="Toggle theme">
+          <i class="bi bi-moon"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+          <img src="" alt="Avatar" class="avatar-img nav-user-avatar">
+          <div class="d-none d-sm-block text-start">
+            <div class="small fw-bold nav-user-name">Admin</div>
+            <div class="text-danger fw-semibold" style="font-size: 0.72rem;">ADMINISTRATOR</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid p-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+          <h3 class="fw-bold mb-1">System Health & Ticket Metrics</h3>
+          <p class="text-muted small mb-0">Real-time overview of IT service requests, resolution statuses, and workload</p>
+        </div>
+        <div>
+          <a href="/admin/tickets.html" class="btn btn-primary d-inline-flex align-items-center gap-2">
+            <i class="bi bi-list-check"></i>
+            <span>Manage All Tickets</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Total</span>
+              <div class="stat-number" id="adm-total">0</div>
+            </div>
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+              <i class="bi bi-folder2-open"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Pending</span>
+              <div class="stat-number text-warning" id="adm-pending">0</div>
+            </div>
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">In Progress</span>
+              <div class="stat-number text-info" id="adm-progress">0</div>
+            </div>
+            <div class="stat-icon bg-info bg-opacity-10 text-info">
+              <i class="bi bi-tools"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Resolved</span>
+              <div class="stat-number text-success" id="adm-resolved">0</div>
+            </div>
+            <div class="stat-icon bg-success bg-opacity-10 text-success">
+              <i class="bi bi-check-all"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Closed</span>
+              <div class="stat-number text-secondary" id="adm-closed">0</div>
+            </div>
+            <div class="stat-icon bg-secondary bg-opacity-10 text-secondary">
+              <i class="bi bi-archive"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+          <div class="stat-card">
+            <div class="stat-card-info">
+              <span class="stat-card-label">Last 7 Days</span>
+              <div class="stat-number text-primary" id="adm-last7">0</div>
+            </div>
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+              <i class="bi bi-calendar-event"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+          <div class="card-custom p-4 h-100">
+            <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart me-2 text-primary"></i>Tickets by Status</h6>
+            <div style="height: 250px; position: relative;">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card-custom p-4 h-100">
+            <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart me-2 text-primary"></i>Tickets by Priority</h6>
+            <div style="height: 250px; position: relative;">
+              <canvas id="priorityChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Tickets Table -->
+      <div class="card-custom p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">Recent Tickets Raised</h5>
+          <a href="/admin/tickets.html" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+              <tr>
+                <th>ID</th>
+                <th>Subject</th>
+                <th>Employee</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th class="text-end">Manage</th>
+              </tr>
+            </thead>
+            <tbody id="recent-tbody">
+              <tr>
+                <td colspan="8" class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                  Loading recent tickets...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/guard.js"></script>
+<script>
+  let statusChartInstance = null;
+  let priorityChartInstance = null;
+
+  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('show');
+  });
+
+  async function loadAdminDashboard() {
+    const admin = await checkAuth('admin');
+    if (!admin) return;
+
+    try {
+      const res = await api.get('/dashboard/stats');
+      const data = res.data;
+
+      document.getElementById('adm-total').textContent = data.total;
+      document.getElementById('adm-pending').textContent = data.byStatus?.Pending || 0;
+      document.getElementById('adm-progress').textContent = data.byStatus?.['In Progress'] || 0;
+      document.getElementById('adm-resolved').textContent = data.byStatus?.Resolved || 0;
+      document.getElementById('adm-closed').textContent = data.byStatus?.Closed || 0;
+      document.getElementById('adm-last7').textContent = data.last7Days || 0;
+
+      // Render Charts
+      renderCharts(data.byStatus, data.byPriority);
+
+      // Render Recent Tickets
+      renderRecent(data.recentTickets || []);
+
+    } catch (err) {
+      showToast('Failed to load dashboard statistics: ' + err.message, 'error');
+    }
+  }
+
+  function renderCharts(byStatus = {}, byPriority = {}) {
+    // Status Doughnut Chart
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    if (statusChartInstance) statusChartInstance.destroy();
+
+    statusChartInstance = new Chart(statusCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Pending', 'In Progress', 'Resolved', 'Closed'],
+        datasets: [{
+          data: [
+            byStatus.Pending || 0,
+            byStatus['In Progress'] || 0,
+            byStatus.Resolved || 0,
+            byStatus.Closed || 0
+          ],
+          backgroundColor: ['#f59e0b', '#06b6d4', '#10b981', '#64748b']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    // Priority Bar Chart
+    const prioCtx = document.getElementById('priorityChart').getContext('2d');
+    if (priorityChartInstance) priorityChartInstance.destroy();
+
+    priorityChartInstance = new Chart(prioCtx, {
+      type: 'bar',
+      data: {
+        labels: ['High', 'Medium', 'Low'],
+        datasets: [{
+          label: 'Tickets',
+          data: [
+            byPriority.High || 0,
+            byPriority.Medium || 0,
+            byPriority.Low || 0
+          ],
+          backgroundColor: ['#ef4444', '#f59e0b', '#10b981']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        }
+      }
+    });
+  }
+
+  function renderRecent(tickets) {
+    const tbody = document.getElementById('recent-tbody');
+    tbody.innerHTML = '';
+
+    if (!tickets.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No tickets yet.</td></tr>`;
+      return;
+    }
+
+    tickets.forEach(ticket => {
+      const tr = document.createElement('tr');
+
+      let statusClass = 'badge-pending';
+      if (ticket.status === 'In Progress') statusClass = 'badge-inprogress';
+      else if (ticket.status === 'Resolved') statusClass = 'badge-resolved';
+      else if (ticket.status === 'Closed') statusClass = 'badge-closed';
+
+      let priorityClass = 'badge-medium';
+      if (ticket.priority === 'High') priorityClass = 'badge-high';
+      else if (ticket.priority === 'Low') priorityClass = 'badge-low';
+
+      const dateStr = new Date(ticket.createdAt).toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'short'
+      });
+
+      tr.innerHTML = `
+        <td class="fw-semibold text-primary">
+          <a href="/admin/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="ticket-link"></a>
+        </td>
+        <td class="ticket-title fw-medium text-truncate" style="max-width: 220px;"></td>
+        <td class="ticket-user small"></td>
+        <td><span class="badge bg-light text-dark border category-badge"></span></td>
+        <td><span class="badge-status ${priorityClass} priority-badge"></span></td>
+        <td><span class="badge-status ${statusClass} status-badge"></span></td>
+        <td class="small text-muted date-cell"></td>
+        <td class="text-end">
+          <a href="/admin/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="btn btn-sm btn-outline-primary">
+            Manage
+          </a>
+        </td>
+      `;
+
+      tr.querySelector('.ticket-link').textContent = ticket.ticketId;
+      tr.querySelector('.ticket-title').textContent = ticket.title;
+      tr.querySelector('.ticket-user').textContent = ticket.createdBy?.name || 'Unknown';
+      tr.querySelector('.category-badge').textContent = ticket.category;
+      tr.querySelector('.priority-badge').textContent = ticket.priority;
+      tr.querySelector('.status-badge').textContent = ticket.status;
+      tr.querySelector('.date-cell').textContent = dateStr;
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadAdminDashboard);
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raise Support Ticket - Nettech Help Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="bi bi-headset text-primary"></i>
+        <span>Nettech IT</span>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="/user/dashboard.html" class="sidebar-link">
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>My Dashboard</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/user/raise-ticket.html" class="sidebar-link active">
+          <i class="bi bi-plus-circle"></i>
+          <span>Raise Ticket</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/user/profile.html" class="sidebar-link">
+          <i class="bi bi-person-gear"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+      <li class="sidebar-item mt-4">
+        <a href="#" class="sidebar-link text-danger btn-logout">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Area -->
+  <main class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary d-md-none" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h5 class="mb-0 fw-bold">Raise Support Ticket</h5>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary theme-toggle-btn" title="Toggle theme">
+          <i class="bi bi-moon"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+          <img src="" alt="Avatar" class="avatar-img nav-user-avatar">
+          <div class="d-none d-sm-block text-start">
+            <div class="small fw-bold nav-user-name">Loading...</div>
+            <div class="text-muted" style="font-size: 0.75rem;">Employee</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid p-4" style="max-width: 900px;">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h3 class="fw-bold mb-1">Submit IT Ticket</h3>
+          <p class="text-muted small mb-0">Describe the technical issue in detail so our support staff can resolve it</p>
+        </div>
+        <a href="/user/dashboard.html" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-arrow-left"></i> Back to Tickets
+        </a>
+      </div>
+
+      <div class="card-custom p-4">
+        <div id="form-alert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+
+        <form id="raise-ticket-form" novalidate>
+          <div class="mb-3">
+            <label for="title" class="form-label small fw-semibold">Subject / Title *</label>
+            <input type="text" class="form-control" id="title" placeholder="e.g. Laptop not connecting to office Wi-Fi" required minlength="5" maxlength="100">
+            <div class="form-text small">5 to 100 characters summary of your issue.</div>
+            <div class="invalid-feedback" id="title-feedback">Title must be between 5 and 100 characters.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="category" class="form-label small fw-semibold">Category *</label>
+              <select class="form-select" id="category" required>
+                <option value="Hardware">Hardware (Laptop, Monitor, Mouse)</option>
+                <option value="Software">Software (OS, Office, Dev tools)</option>
+                <option value="Network">Network (Wi-Fi, VPN, Internet)</option>
+                <option value="Account">Account (Access, Password, Email)</option>
+                <option value="Other" selected>Other Issue</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="priority" class="form-label small fw-semibold">Priority</label>
+              <select class="form-select" id="priority">
+                <option value="Low">Low - Minor inconvenience</option>
+                <option value="Medium" selected>Medium - Normal priority</option>
+                <option value="High">High - Blocking urgent work</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="description" class="form-label small fw-semibold">Detailed Description *</label>
+            <textarea class="form-control" id="description" rows="5" placeholder="Please provide steps to reproduce, error codes, device name, or recent changes..." required minlength="10" maxlength="2000"></textarea>
+            <div class="form-text small">10 to 2000 characters.</div>
+            <div class="invalid-feedback" id="description-feedback">Description must be between 10 and 2000 characters.</div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/user/dashboard.html" class="btn btn-light px-4">Cancel</a>
+            <button type="submit" id="btn-submit" class="btn btn-primary px-4 fw-semibold">
+              <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
+              Create Support Ticket
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/guard.js"></script>
+<script>
+  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('show');
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await checkAuth('user');
+  });
+
+  const form = document.getElementById('raise-ticket-form');
+  const alertEl = document.getElementById('form-alert');
+  const submitBtn = document.getElementById('btn-submit');
+  const spinner = submitBtn.querySelector('.spinner-border');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertEl.classList.add('d-none');
+    alertEl.textContent = '';
+
+    const title = document.getElementById('title').value.trim();
+    const category = document.getElementById('category').value;
+    const priority = document.getElementById('priority').value;
+    const description = document.getElementById('description').value.trim();
+
+    let valid = true;
+    if (!title || title.length < 5 || title.length > 100) {
+      document.getElementById('title').classList.add('is-invalid');
+      valid = false;
+    } else {
+      document.getElementById('title').classList.remove('is-invalid');
+    }
+
+    if (!description || description.length < 10 || description.length > 2000) {
+      document.getElementById('description').classList.add('is-invalid');
+      valid = false;
+    } else {
+      document.getElementById('description').classList.remove('is-invalid');
+    }
+
+    if (!valid) return;
+
+    submitBtn.disabled = true;
+    spinner.classList.remove('d-none');
+
+    try {
+      const res = await api.post('/tickets', {
+        title,
+        description,
+        category,
+        priority
+      });
+
+      showToast(`Ticket ${res.data.ticketId} created successfully!`, 'success');
+      setTimeout(() => {
+        window.location.href = `/user/ticket-detail.html?id=${encodeURIComponent(res.data.id || res.data.ticketId)}`;
+      }, 700);
+    } catch (err) {
+      const msg = err.data?.message || err.message || 'Failed to create ticket';
+      alertEl.textContent = msg;
+      alertEl.classList.remove('d-none');
+      showToast(msg, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      spinner.classList.add('d-none');
+    }
+  });
+</script>
+</body>
+</html>

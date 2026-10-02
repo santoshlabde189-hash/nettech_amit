@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Tickets - Nettech Help Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="bi bi-shield-lock-fill text-primary"></i>
+        <span>Nettech Admin</span>
+      </div>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="/admin/dashboard.html" class="sidebar-link">
+          <i class="bi bi-speedometer2"></i>
+          <span>Overview</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/tickets.html" class="sidebar-link active">
+          <i class="bi bi-ticket-perforated"></i>
+          <span>Manage Tickets</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/admin/users.html" class="sidebar-link">
+          <i class="bi bi-people"></i>
+          <span>Users</span>
+        </a>
+      </li>
+      <li class="sidebar-item mt-4">
+        <a href="#" class="sidebar-link text-danger btn-logout">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Sign Out</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary d-md-none" id="mobile-toggle">
+          <i class="bi bi-list"></i>
+        </button>
+        <h5 class="mb-0 fw-bold">Manage All Help Desk Tickets</h5>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-outline-secondary theme-toggle-btn" title="Toggle theme">
+          <i class="bi bi-moon"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+          <img src="" alt="Avatar" class="avatar-img nav-user-avatar">
+          <div class="d-none d-sm-block text-start">
+            <div class="small fw-bold nav-user-name">Admin</div>
+            <div class="text-danger fw-semibold" style="font-size: 0.72rem;">ADMINISTRATOR</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid p-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+          <h3 class="fw-bold mb-1">Company Support Tickets</h3>
+          <p class="text-muted small mb-0">Search, filter, update statuses, or delete tickets</p>
+        </div>
+      </div>
+
+      <!-- Filter Controls Card -->
+      <div class="card-custom p-3 mb-4">
+        <div class="row g-2 align-items-center">
+          <div class="col-md-4 col-12">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+              <input type="text" id="admin-search" class="form-control" placeholder="Search ticket ID, title, or details...">
+            </div>
+          </div>
+          <div class="col-md-2 col-6">
+            <select id="filter-status" class="form-select form-select-sm">
+              <option value="all">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+          <div class="col-md-2 col-6">
+            <select id="filter-priority" class="form-select form-select-sm">
+              <option value="all">All Priorities</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="col-md-2 col-6">
+            <select id="filter-category" class="form-select form-select-sm">
+              <option value="all">All Categories</option>
+              <option value="Hardware">Hardware</option>
+              <option value="Software">Software</option>
+              <option value="Network">Network</option>
+              <option value="Account">Account</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-2 col-6 text-end">
+            <button class="btn btn-sm btn-outline-secondary w-100" id="btn-reset-filters">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tickets Table Card -->
+      <div class="card-custom p-4">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="admin-tickets-table">
+            <thead class="table-light small">
+              <tr>
+                <th>Ticket ID</th>
+                <th>Subject</th>
+                <th>Employee / Dept</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Date Raised</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tickets-tbody">
+              <tr>
+                <td colspan="8" class="text-center py-4 text-muted">
+                  <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                  Loading tickets...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+          <small class="text-muted" id="admin-pagination-info">Showing 0 tickets</small>
+          <nav>
+            <ul class="pagination pagination-sm mb-0" id="admin-pagination-controls"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="statusModalLabel">Update Ticket Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="status-update-form">
+        <div class="modal-body">
+          <input type="hidden" id="modal-ticket-id">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Ticket:</label>
+            <div id="modal-ticket-title" class="fw-bold text-primary">...</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 mb-3">
+              <label for="modal-status" class="form-label small fw-semibold">Status *</label>
+              <select class="form-select" id="modal-status" required>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
+            <div class="col-sm-6 mb-3">
+              <label for="modal-priority" class="form-label small fw-semibold">Priority *</label>
+              <select class="form-select" id="modal-priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="modal-remarks" class="form-label small fw-semibold">Admin / Technician Remarks</label>
+            <textarea class="form-control" id="modal-remarks" rows="3" placeholder="Explain the resolution or next steps..."></textarea>
+            <div class="form-text small">User will receive an email update with these remarks.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-status">Update & Notify</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold text-danger">Delete Ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="small mb-0">Are you sure you want to permanently delete ticket <strong id="delete-ticket-id"></strong>? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger" id="btn-confirm-delete">Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/guard.js"></script>
+<script>
+  let currentPage = 1;
+  let searchTimer = null;
+  let ticketToDelete = null;
+
+  document.getElementById('mobile-toggle')?.addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('show');
+  });
+
+  async function loadAdminTickets(page = 1) {
+    currentPage = page;
+    const admin = await checkAuth('admin');
+    if (!admin) return;
+
+    const tbody = document.getElementById('admin-tickets-tbody');
+    const searchVal = document.getElementById('admin-search').value.trim();
+    const statusVal = document.getElementById('filter-status').value;
+    const priorityVal = document.getElementById('filter-priority').value;
+    const categoryVal = document.getElementById('filter-category').value;
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center py-4 text-muted">
+          <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+          Loading tickets...
+        </td>
+      </tr>
+    `;
+
+    try {
+      const res = await api.get('/tickets', {
+        page,
+        limit: 10,
+        search: searchVal,
+        status: statusVal,
+        priority: priorityVal,
+        category: categoryVal
+      });
+
+      const { tickets, pagination } = res.data;
+
+      if (!tickets || tickets.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted">No tickets match criteria.</td></tr>`;
+        document.getElementById('admin-pagination-info').textContent = 'Showing 0 tickets';
+        document.getElementById('admin-pagination-controls').innerHTML = '';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      tickets.forEach(ticket => {
+        const tr = document.createElement('tr');
+
+        let statusClass = 'badge-pending';
+        if (ticket.status === 'In Progress') statusClass = 'badge-inprogress';
+        else if (ticket.status === 'Resolved') statusClass = 'badge-resolved';
+        else if (ticket.status === 'Closed') statusClass = 'badge-closed';
+
+        let priorityClass = 'badge-medium';
+        if (ticket.priority === 'High') priorityClass = 'badge-high';
+        else if (ticket.priority === 'Low') priorityClass = 'badge-low';
+
+        const dateStr = new Date(ticket.createdAt).toLocaleDateString('en-GB', {
+          day: '2-digit', month: 'short', year: 'numeric'
+        });
+
+        tr.innerHTML = `
+          <td class="fw-semibold text-primary">
+            <a href="/admin/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="ticket-link"></a>
+          </td>
+          <td class="ticket-title fw-medium text-truncate" style="max-width: 220px;"></td>
+          <td class="small">
+            <div class="fw-semibold ticket-owner-name"></div>
+            <div class="text-muted ticket-owner-dept"></div>
+          </td>
+          <td><span class="badge bg-light text-dark border category-badge"></span></td>
+          <td><span class="badge-status ${priorityClass} priority-badge"></span></td>
+          <td><span class="badge-status ${statusClass} status-badge"></span></td>
+          <td class="small text-muted date-cell"></td>
+          <td class="text-end">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-primary btn-quick-status" title="Change Status">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <a href="/admin/ticket-detail.html?id=${encodeURIComponent(ticket._id)}" class="btn btn-outline-secondary" title="View details">
+                <i class="bi bi-eye"></i>
+              </a>
+              <button class="btn btn-outline-danger btn-delete-ticket" title="Delete ticket">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+
+        tr.querySelector('.ticket-link').textContent = ticket.ticketId;
+        tr.querySelector('.ticket-title').textContent = ticket.title;
+        tr.querySelector('.ticket-owner-name').textContent = ticket.createdBy?.name || 'Unknown';
+        tr.querySelector('.ticket-owner-dept').textContent = ticket.createdBy?.department || '-';
+        tr.querySelector('.category-badge').textContent = ticket.category;
+        tr.querySelector('.priority-badge').textContent = ticket.priority;
+        tr.querySelector('.status-badge').textContent = ticket.status;
+        tr.querySelector('.date-cell').textContent = dateStr;
+
+        // Quick status modal button
+        tr.querySelector('.btn-quick-status').addEventListener('click', () => {
+          document.getElementById('modal-ticket-id').value = ticket._id;
+          document.getElementById('modal-ticket-title').textContent = `[${ticket.ticketId}] ${ticket.title}`;
+          document.getElementById('modal-status').value = ticket.status;
+          document.getElementById('modal-priority').value = ticket.priority;
+          document.getElementById('modal-remarks').value = ticket.adminRemarks || '';
+          new bootstrap.Modal(document.getElementById('statusModal')).show();
+        });
+
+        // Delete button
+        tr.querySelector('.btn-delete-ticket').addEventListener('click', () => {
+          ticketToDelete = ticket;
+          document.getElementById('delete-ticket-id').textContent = ticket.ticketId;
+          new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('admin-pagination-info').textContent = 
+        `Showing page ${pagination.page} of ${pagination.pages} (${pagination.total} total tickets)`;
+
+      renderAdminPagination(pagination);
+
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  function renderAdminPagination(p) {
+    const ul = document.getElementById('admin-pagination-controls');
+    ul.innerHTML = '';
+    if (p.pages <= 1) return;
+
+    const prevLi = document.createElement('li');
+    prevLi.className = `page-item ${p.page <= 1 ? 'disabled' : ''}`;
+    prevLi.innerHTML = `<a class="page-link" href="#">&laquo;</a>`;
+    if (p.page > 1) {
+      prevLi.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadAdminTickets(p.page - 1);
+      });
+    }
+    ul.appendChild(prevLi);
+
+    for (let i = 1; i <= p.pages; i++) {
+      const li = document.createElement('li');
+      li.className = `page-item ${i === p.page ? 'active' : ''}`;
+      li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+      li.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadAdminTickets(i);
+      });
+      ul.appendChild(li);
+    }
+
+    const nextLi = document.createElement('li');
+    nextLi.className = `page-item ${p.page >= p.pages ? 'disabled' : ''}`;
+    nextLi.innerHTML = `<a class="page-link" href="#">&raquo;</a>`;
+    if (p.page < p.pages) {
+      nextLi.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        loadAdminTickets(p.page + 1);
+      });
+    }
+    ul.appendChild(nextLi);
+  }
+
+  // Handle status update form submit
+  document.getElementById('status-update-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('modal-ticket-id').value;
+    const status = document.getElementById('modal-status').value;
+    const priority = document.getElementById('modal-priority').value;
+    const remarks = document.getElementById('modal-remarks').value.trim();
+
+    try {
+      await api.patch(`/tickets/${encodeURIComponent(id)}/status`, {
+        status,
+        priority,
+        remarks
+      });
+
+      showToast('Status updated and notification dispatched', 'success');
+      bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
+      loadAdminTickets(currentPage);
+    } catch (err) {
+      showToast(err.data?.message || err.message, 'error');
+    }
+  });
+
+  // Handle delete confirmation
+  document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+    if (!ticketToDelete) return;
+
+    try {
+      await api.delete(`/tickets/${encodeURIComponent(ticketToDelete._id)}`);
+      showToast(`Ticket ${ticketToDelete.ticketId} deleted`, 'success');
+      bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+      ticketToDelete = null;
+      loadAdminTickets(currentPage);
+    } catch (err) {
+      showToast(err.data?.message || err.message, 'error');
+    }
+  });
+
+  // Search and filter listeners
+  document.getElementById('admin-search').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => loadAdminTickets(1), 350);
+  });
+
+  ['filter-status', 'filter-priority', 'filter-category'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => loadAdminTickets(1));
+  });
+
+  document.getElementById('btn-reset-filters').addEventListener('click', () => {
+    document.getElementById('admin-search').value = '';
+    document.getElementById('filter-status').value = 'all';
+    document.getElementById('filter-priority').value = 'all';
+    document.getElementById('filter-category').value = 'all';
+    loadAdminTickets(1);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => loadAdminTickets(1));
+</script>
+</body>
+</html>
